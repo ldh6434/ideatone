@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendar</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>이달의 동아리</h1>
+    </header>
+    <div class="toggle-buttons">
+        <button class="toggle-button active">동아리 일정</button>
+        <button class="toggle-button">개인 일정</button>
+    </div>
+    <div class="calendar-nav">
+        <button class="nav-button" onclick="prevMonth()"><i class="fas fa-chevron-left"></i></button>
+        <span id="month-label">5월</span>
+        <button class="nav-button" onclick="nextMonth()"><i class="fas fa-chevron-right"></i></button>
+    </div>
+    <div class="calendar">
+        <div class="calendar-grid">
+            <div class="calendar-day">1</div>
+            <div class="calendar-day">2</div>
+            <div class="calendar-day">3</div>
+            <div class="calendar-day">4</div>
+            <div class="calendar-day">5</div>
+            <div class="calendar-day">6</div>
+            <div class="calendar-day">7</div>
+            <div class="calendar-day">8</div>
+            <div class="calendar-day">9</div>
+            <div class="calendar-day">10</div>
+            <div class="calendar-day">11</div>
+            <div class="calendar-day">12</div>
+            <div class="calendar-day">13</div>
+            <div class="calendar-day">14</div>
+            <div class="calendar-day">15</div>
+            <div class="calendar-day">16</div>
+            <div class="calendar-day">17</div>
+            <div class="calendar-day">18</div>
+            <div class="calendar-day">19</div>
+            <div class="calendar-day">20</div>
+            <div class="calendar-day">21</div>
+            <div class="calendar-day">22</div>
+            <div class="calendar-day">23</div>
+            <div class="calendar-day">24</div>
+            <div class="calendar-day">25</div>
+            <div class="calendar-day">26</div>
+            <div class="calendar-day">27</div>
+            <div class="calendar-day">28</div>
+            <div class="calendar-day">29</div>
+            <div class="calendar-day">30</div>
+            <div class="calendar-day">31</div>
+        </div>
+    </div>
+    <div class="event-list">
+        <div class="event-item" style="background-color: #ffe0e0;">
+            <div class="event-dot" style="background-color: red;"></div>
+            <div class="event-info">
+                <h3>멧돼이사자처럼</h3>
+                <p>오후 7 - 10시 · 전자관 419호</p>
+            </div>
+        </div>
+        <div class="event-item" style="background-color: #e0e0ff;">
+            <div class="event-dot" style="background-color: blue;"></div>
+            <div class="event-info">
+                <h3>FC 황궁</h3>
+                <p>오후 6 - 9시 · 대운동장</p>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="scripts.js"></script>
+</body>
+</html>
