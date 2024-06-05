@@ -1,7 +1,43 @@
 import 'package:flutter/material.dart';
 import 'club_detail_screen.dart'; // ClubDetailScreen 파일을 import
 
-class ClubListScreen extends StatelessWidget {
+class ClubListScreen extends StatefulWidget {
+  @override
+  _ClubListScreenState createState() => _ClubListScreenState();
+}
+
+class _ClubListScreenState extends State<ClubListScreen> {
+  TextEditingController _searchController = TextEditingController();
+  List<Map<String, String>> _clubs = [
+    {'emoji': '🦁', 'name': '사자 동아리', 'reviews': '★★★★★ / 후기 200개'},
+    {'emoji': '🐱', 'name': '고양이 동아리', 'reviews': '★★★★☆ / 후기 180개'},
+    {'emoji': '🐻', 'name': '두산 동아리', 'reviews': '★★★★★ / 후기 300개'},
+    {'emoji': '👯', 'name': '쌍둥이 동아리', 'reviews': '★★★☆☆ / 후기 100개'},
+    {'emoji': '🐯', 'name': '호랑이 동아리', 'reviews': '★★★★☆ / 후기 150개'},
+    {'emoji': '💩', 'name': '똥 덩어리', 'reviews': '★★☆☆☆ / 후기 35개'},
+  ];
+  late List<Map<String, String>> _filteredClubs;
+
+  @override
+  void initState() {
+    super.initState();
+    _filteredClubs = _clubs;
+    _searchController.addListener(() {
+      setState(() {
+        _filteredClubs = _clubs.where((club) {
+          return club['name']!.toLowerCase().contains(_searchController.text.toLowerCase()) ||
+              club['reviews']!.toLowerCase().contains(_searchController.text.toLowerCase());
+        }).toList();
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -13,6 +49,7 @@ class ClubListScreen extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: TextField(
+              controller: _searchController,
               decoration: InputDecoration(
                 hintText: '동아리 이름, 내용, 분야',
                 border: OutlineInputBorder(),
@@ -36,128 +73,28 @@ class ClubListScreen extends StatelessWidget {
           ),
           Expanded(
             child: ListView(
-              children: [
-                ClubItem(
-                  emoji: '🦁',
-                  name: '사자 동아리',
-                  reviews: '★★★★★ / 후기 200개',
+              children: _filteredClubs.map((club) {
+                return ClubItem(
+                  emoji: club['emoji']!,
+                  name: club['name']!,
+                  reviews: club['reviews']!,
                   onApply: () {
-                    _showApplyDialog(context, '사자 동아리');
+                    _showApplyDialog(context, club['name']!);
                   },
                   onTap: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => ClubDetailScreen(
-                          emoji: '🦁',
-                          name: '사자 동아리',
-                          reviews: '★★★★★ / 후기 200개',
+                          emoji: club['emoji']!,
+                          name: club['name']!,
+                          reviews: club['reviews']!,
                         ),
                       ),
                     );
                   },
-                ),
-                ClubItem(
-                  emoji: '🐱',
-                  name: '고양이 동아리',
-                  reviews: '★★★★☆ / 후기 180개',
-                  onApply: () {
-                    _showApplyDialog(context, '고양이 동아리');
-                  },
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ClubDetailScreen(
-                          emoji: '🐱',
-                          name: '고양이 동아리',
-                          reviews: '★★★★☆ / 후기 180개',
-                        ),
-                      ),
-                    );
-                  },
-                ),
-                ClubItem(
-                  emoji: '🐻',
-                  name: '두산 동아리',
-                  reviews: '★★★★★ / 후기 300개',
-                  onApply: () {
-                    _showApplyDialog(context, '두산 동아리');
-                  },
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ClubDetailScreen(
-                          emoji: '🐻',
-                          name: '두산 동아리',
-                          reviews: '★★★★★ / 후기 300개',
-                        ),
-                      ),
-                    );
-                  },
-                ),
-                ClubItem(
-                  emoji: '👯',
-                  name: '쌍둥이 동아리',
-                  reviews: '★★★☆☆ / 후기 100개',
-                  onApply: () {
-                    _showApplyDialog(context, '쌍둥이 동아리');
-                  },
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ClubDetailScreen(
-                          emoji: '👯',
-                          name: '쌍둥이 동아리',
-                          reviews: '★★★☆☆ / 후기 100개',
-                        ),
-                      ),
-                    );
-                  },
-                ),
-                ClubItem(
-                  emoji: '🐯',
-                  name: '호랑이 동아리',
-                  reviews: '★★★★☆ / 후기 150개',
-                  onApply: () {
-                    _showApplyDialog(context, '호랑이 동아리');
-                  },
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ClubDetailScreen(
-                          emoji: '🐯',
-                          name: '호랑이 동아리',
-                          reviews: '★★★★☆ / 후기 150개',
-                        ),
-                      ),
-                    );
-                  },
-                ),
-                ClubItem(
-                  emoji: '💩',
-                  name: '똥 덩어리',
-                  reviews: '★★☆☆☆ / 후기 35개',
-                  onApply: () {
-                    _showApplyDialog(context, '똥 덩어리');
-                  },
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ClubDetailScreen(
-                          emoji: '💩',
-                          name: '똥 덩어리',
-                          reviews: '★★☆☆☆ / 후기 35개',
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              ],
+                );
+              }).toList(),
             ),
           ),
         ],
