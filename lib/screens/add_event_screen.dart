@@ -3,8 +3,9 @@ import 'package:intl/intl.dart';
 
 class AddEventScreen extends StatefulWidget {
   final Function(Map<String, dynamic>) onAddEvent;
+  final String title;
 
-  AddEventScreen({required this.onAddEvent});
+  AddEventScreen({required this.onAddEvent, required this.title});
 
   @override
   _AddEventScreenState createState() => _AddEventScreenState();
@@ -38,7 +39,7 @@ class _AddEventScreenState extends State<AddEventScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('동아리 일정 추가'),
+        title: Text(widget.title),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -123,6 +124,34 @@ class _AddEventScreenState extends State<AddEventScreen> {
                   DropdownMenuItem(
                     child: Text('초록색'),
                     value: Colors.green,
+                  ),
+                  DropdownMenuItem(
+                    child: Text('노란색'),
+                    value: Colors.yellow,
+                  ),
+                  DropdownMenuItem(
+                    child: Text('보라색'),
+                    value: Colors.purple,
+                  ),
+                  DropdownMenuItem(
+                    child: Text('주황색'),
+                    value: Colors.orange,
+                  ),
+                  DropdownMenuItem(
+                    child: Text('분홍색'),
+                    value: Colors.pink,
+                  ),
+                  DropdownMenuItem(
+                    child: Text('갈색'),
+                    value: Colors.brown,
+                  ),
+                  DropdownMenuItem(
+                    child: Text('회색'),
+                    value: Colors.grey,
+                  ),
+                  DropdownMenuItem(
+                    child: Text('검은색'),
+                    value: Colors.black,
                   ),
                 ],
                 onChanged: (value) {

@@ -24,7 +24,7 @@ class FriendAddScreen extends StatelessWidget {
                   FriendItem(name: '이동훈', imagePath: 'assets/images/user1.jpg'),
                   FriendItem(name: '이나경', imagePath: 'assets/images/user2.png'),
                   FriendItem(name: '박상신', imagePath: 'assets/images/user3.jpg'),
-                  FriendItem(name: '신윤종', imagePath: 'assets/images/user4.png'),
+                  FriendItem(name: '신윤종', imagePath: 'assets/images/user4.jpg'),
                   FriendItem(name: '고태훈', imagePath: 'assets/images/user5.png'),
                 ],
               ),
@@ -48,7 +48,7 @@ class FriendAddScreen extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Text(
-                '메시지 : 나와 친구가 되어주지 않겠어?',
+                '메시지 : 거기 너. 내 동료가 돼라.',
                 style: TextStyle(fontSize: 16),
               ),
             ),

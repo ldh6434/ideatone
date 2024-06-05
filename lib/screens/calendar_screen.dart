@@ -85,6 +85,16 @@ class _CalendarScreenState extends State<CalendarScreen> {
     });
   }
 
+  void _deleteEvent(Map<String, dynamic> event) {
+    setState(() {
+      if (_isClubCalendarSelected) {
+        _clubEvents[event['month']]?.remove(event);
+      } else {
+        _personalEvents[event['month']]?.remove(event);
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     List<Map<String, dynamic>> selectedEvents = _isClubCalendarSelected ? _clubEvents[_selectedMonth] ?? [] : _personalEvents[_selectedMonth] ?? [];
@@ -137,54 +147,61 @@ class _CalendarScreenState extends State<CalendarScreen> {
                         : null),
               ],
             ),
-            GridView.builder(
-              shrinkWrap: true,
-              itemCount: DateTime(2024, _selectedMonth + 1, 0).day,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 7,
-                childAspectRatio: 1.5,
-              ),
-              itemBuilder: (context, index) {
-                int day = index + 1;
-                bool isEventDay = eventDays.contains(day);
-                Color dotColor = Colors.transparent;
+            Expanded(
+              child: GridView.builder(
+                itemCount: DateTime(2024, _selectedMonth + 1, 0).day,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 7,
+                  childAspectRatio: 1,
+                ),
+                itemBuilder: (context, index) {
+                  int day = index + 1;
+                  bool isEventDay = eventDays.contains(day);
+                  Color dotColor = Colors.transparent;
 
-                if (isEventDay) {
-                  var event = selectedEvents
-                      .firstWhere((e) => e['day'] == day,
-                      orElse: () => {'color': Colors.transparent});
-                  dotColor = event?['color'];
-                }
+                  if (isEventDay) {
+                    var event = selectedEvents
+                        .firstWhere((e) => e['day'] == day,
+                        orElse: () => {'color': Colors.transparent});
+                    dotColor = event?['color'];
+                  }
 
-                return Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text('$day', style: TextStyle(fontSize: 16, fontFamily: 'NotoSans')),
-                      SizedBox(height: 4),
-                      Container(
-                        width: 6,
-                        height: 6,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: dotColor,
+                  return Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text('$day', style: TextStyle(fontSize: 16, fontFamily: 'NotoSans')),
+                        SizedBox(height: 4),
+                        Container(
+                          width: 6,
+                          height: 6,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: dotColor,
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                );
-              },
+                      ],
+                    ),
+                  );
+                },
+              ),
             ),
             SizedBox(height: 20),
             Expanded(
               child: ListView(
                 children: selectedEvents.map((event) {
-                  return EventItem(
-                    color: event['color'],
-                    title: event['title'],
-                    time: event['time'],
-                    location: event['location'],
-                    date: DateTime(event['year'], event['month'], event['day']), // 날짜 정보 추가
+                  return ListTile(
+                    leading: CircleAvatar(
+                      backgroundColor: event['color'],
+                    ),
+                    title: Text(event['title']),
+                    subtitle: Text(
+                      '${event['month']}월 ${event['day']}일 · ${event['time']} · ${event['location']}',
+                    ),
+                    trailing: IconButton(
+                      icon: Icon(Icons.delete, color: Colors.red),
+                      onPressed: () => _deleteEvent(event),
+                    ),
                   );
                 }).toList(),
               ),
@@ -197,7 +214,10 @@ class _CalendarScreenState extends State<CalendarScreen> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => AddEventScreen(onAddEvent: _addEvent),
+              builder: (context) => AddEventScreen(
+                onAddEvent: _addEvent,
+                title: _isClubCalendarSelected ? '동아리 일정 추가' : '개인 일정 추가',
+              ),
             ),
           );
         },
@@ -238,13 +258,15 @@ class EventItem extends StatelessWidget {
   final String time;
   final String location;
   final DateTime date; // 날짜 필드 추가
+  final VoidCallback onDelete; // 삭제 콜백 함수 추가
 
   EventItem({
     required this.color,
     required this.title,
     required this.time,
     required this.location,
-    required this.date, // 날짜 필드 추가
+    required this.date,
+    required this.onDelete, // 삭제 콜백 함수 추가
   });
 
   @override
@@ -257,6 +279,10 @@ class EventItem extends StatelessWidget {
       subtitle: Text(
         '${date.month}월 ${date.day}일 · $time · $location', // 날짜 표시 추가
         style: TextStyle(fontFamily: 'NotoSans'),
+      ),
+      trailing: IconButton(
+        icon: Icon(Icons.delete, color: Colors.red),
+        onPressed: onDelete,
       ),
     );
   }

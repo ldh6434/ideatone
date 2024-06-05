@@ -51,7 +51,7 @@ class _ProfileFormScreenState extends State<ProfileFormScreen> {
       appBar: AppBar(
         title: Text('지원서 작성'),
       ),
-      body: Padding(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
