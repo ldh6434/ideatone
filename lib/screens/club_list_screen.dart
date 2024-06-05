@@ -36,12 +36,24 @@ class ClubListScreen extends StatelessWidget {
           Expanded(
             child: ListView(
               children: [
-                ClubItem(emoji: '🦁', name: '사자 동아리', reviews: '★★★★★ / 후기 200개'),
-                ClubItem(emoji: '🐱', name: '고양이 동아리', reviews: '★★★★☆ / 후기 180개'),
-                ClubItem(emoji: '🐻', name: '두산 동아리', reviews: '★★★★★ / 후기 300개'),
-                ClubItem(emoji: '👯', name: '쌍둥이 동아리', reviews: '★★★☆☆ / 후기 100개'),
-                ClubItem(emoji: '🐯', name: '호랑이 동아리', reviews: '★★★★☆ / 후기 150개'),
-                ClubItem(emoji: '💩', name: '똥 덩어리', reviews: '★★☆☆☆ / 후기 35개'),
+                ClubItem(emoji: '🦁', name: '사자 동아리', reviews: '★★★★★ / 후기 200개', onTap: () {
+                  Navigator.pushNamed(context, '/nfc_check_in_log');
+                }),
+                ClubItem(emoji: '🐱', name: '고양이 동아리', reviews: '★★★★☆ / 후기 180개', onTap: () {
+                  Navigator.pushNamed(context, '/nfc_check_in_log');
+                }),
+                ClubItem(emoji: '🐻', name: '두산 동아리', reviews: '★★★★★ / 후기 300개', onTap: () {
+                  Navigator.pushNamed(context, '/nfc_check_in_log');
+                }),
+                ClubItem(emoji: '👯', name: '쌍둥이 동아리', reviews: '★★★☆☆ / 후기 100개', onTap: () {
+                  Navigator.pushNamed(context, '/nfc_check_in_log');
+                }),
+                ClubItem(emoji: '🐯', name: '호랑이 동아리', reviews: '★★★★☆ / 후기 150개', onTap: () {
+                  Navigator.pushNamed(context, '/nfc_check_in_log');
+                }),
+                ClubItem(emoji: '💩', name: '똥 덩어리', reviews: '★★☆☆☆ / 후기 35개', onTap: () {
+                  Navigator.pushNamed(context, '/nfc_check_in_log');
+                }),
               ],
             ),
           ),
@@ -71,7 +83,6 @@ class ClubListScreen extends StatelessWidget {
           }
         },
       ),
-
     );
   }
 }
@@ -80,8 +91,9 @@ class ClubItem extends StatelessWidget {
   final String emoji;
   final String name;
   final String reviews;
+  final VoidCallback onTap;
 
-  ClubItem({required this.emoji, required this.name, required this.reviews});
+  ClubItem({required this.emoji, required this.name, required this.reviews, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -89,6 +101,7 @@ class ClubItem extends StatelessWidget {
       leading: Text(emoji, style: TextStyle(fontSize: 24)),
       title: Text(name),
       subtitle: Text(reviews),
+      onTap: onTap,
     );
   }
 }
