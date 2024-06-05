@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
 
 class ChatRoomScreen extends StatefulWidget {
   @override
@@ -8,7 +10,33 @@ class ChatRoomScreen extends StatefulWidget {
 class _ChatRoomScreenState extends State<ChatRoomScreen> {
   final List<Map<String, dynamic>> _messages = [];
   final TextEditingController _controller = TextEditingController();
+  final FocusNode _focusNode = FocusNode();
+  final ScrollController _scrollController = ScrollController();
   bool _showExtraButtons = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadMessages();
+  }
+
+  void _loadMessages() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? messagesString = prefs.getString('messages');
+    if (messagesString != null) {
+      List<dynamic> messagesJson = jsonDecode(messagesString);
+      setState(() {
+        _messages.clear();
+        _messages.addAll(messagesJson.map((json) => Map<String, dynamic>.from(json)).toList());
+      });
+    }
+  }
+
+  void _saveMessages() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String messagesString = jsonEncode(_messages);
+    await prefs.setString('messages', messagesString);
+  }
 
   void _sendMessage() {
     if (_controller.text.trim().isNotEmpty) {
@@ -18,14 +46,33 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
           'sent': true,
         });
         _controller.clear();
+        _focusNode.requestFocus();
       });
+      _saveMessages();
+      _scrollToBottom();
     }
+  }
+
+  void _scrollToBottom() {
+    _scrollController.animateTo(
+      _scrollController.position.maxScrollExtent,
+      duration: Duration(milliseconds: 300),
+      curve: Curves.easeOut,
+    );
   }
 
   void _toggleExtraButtons() {
     setState(() {
       _showExtraButtons = !_showExtraButtons;
     });
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    _focusNode.dispose();
+    _scrollController.dispose();
+    super.dispose();
   }
 
   @override
@@ -38,7 +85,7 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
             SizedBox(width: 10),
             Expanded(
               child: Text(
-                '멋쟁이 사자처럼 12기',
+                '사자 동아리',
                 overflow: TextOverflow.ellipsis,
               ),
             ),
@@ -53,6 +100,7 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
         children: [
           Expanded(
             child: ListView.builder(
+              controller: _scrollController,
               itemCount: _messages.length,
               itemBuilder: (context, index) {
                 final message = _messages[index];
@@ -99,12 +147,16 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                 Expanded(
                   child: TextField(
                     controller: _controller,
+                    focusNode: _focusNode,
                     decoration: InputDecoration(
                       hintText: '메시지를 입력하세요',
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
                     ),
+                    onSubmitted: (value) {
+                      _sendMessage();
+                    },
                   ),
                 ),
                 SizedBox(width: 10),

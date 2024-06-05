@@ -21,9 +21,9 @@ class FriendAddScreen extends StatelessWidget {
               child: ListView(
                 scrollDirection: Axis.horizontal,
                 children: <Widget>[
-                  FriendItem(name: '이동훈', imagePath: 'assets/images/user1.png'),
+                  FriendItem(name: '이동훈', imagePath: 'assets/images/user1.jpg'),
                   FriendItem(name: '이나경', imagePath: 'assets/images/user2.png'),
-                  FriendItem(name: '박상신', imagePath: 'assets/images/user3.png'),
+                  FriendItem(name: '박상신', imagePath: 'assets/images/user3.jpg'),
                   FriendItem(name: '신윤종', imagePath: 'assets/images/user4.png'),
                   FriendItem(name: '고태훈', imagePath: 'assets/images/user5.png'),
                 ],
